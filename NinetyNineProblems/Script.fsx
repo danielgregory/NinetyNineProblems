@@ -79,6 +79,44 @@ let TailReverse lst  =
         | x -> acc
     Reverse List.Empty lst 
 
+// 6. Find out whether a list is a palindrome.
+// e.g. IsPalidrome [1;2;3;3;2;1] -> true
+// IsPalidrome only makes sense for lists with an even
+// number of elements.
+
+// solution 1 ... not sure this is the most elegant!
+let IsPalidrome lst =
+    if (List.length lst % 2 = 0) then
+        let FirstHalf = lst |> Seq.take (List.length lst / 2) |> Seq.toList 
+        let SecondHalf = List.rev FirstHalf
+        let Palidrome = FirstHalf @ SecondHalf
+        // test for equality
+        Palidrome = lst
+    else
+        false
+
+// 7. Flatten a nested list structure.
+// e.g. Flatten [1; [2;3;4]; 5; 6]
+// F# lists must contain only one type, so we create a discriminated union
+type ListOrInt = 
+    | I of int
+    | L of int list
+//e.g:
+let x = [I(1); L([2;3;4]); I(5); I(6)]
+
+// tail recursive version
+let Flatten lst =
+    let rec MatchElement acc lst = 
+        match lst with
+        | I(e) :: xs -> e :: MatchElement acc xs
+        | L(e) :: xs -> (e @ acc) @ (MatchElement acc xs) 
+        | [] -> acc
+    MatchElement (List.Empty) lst
+
+
+            
+    
+
 
 
 
