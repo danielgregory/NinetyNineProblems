@@ -85,7 +85,7 @@ let TailReverse lst  =
 // number of elements.
 
 // solution 1 ... not sure this is the most elegant!
-let IsPalidrome lst =
+let IsPalindrome lst =
     if (List.length lst % 2 = 0) then
         let FirstHalf = lst |> Seq.take (List.length lst / 2) |> Seq.toList 
         let SecondHalf = List.rev FirstHalf
@@ -95,29 +95,65 @@ let IsPalidrome lst =
     else
         false
 
+// solution 2 .... obviously just take the mirror image!
+let IsMirror lst = 
+        let reversed = List.rev lst
+        reversed = lst
+
 // 7. Flatten a nested list structure.
 // e.g. Flatten [1; [2;3;4]; 5; 6]
 // F# lists must contain only one type, so we create a discriminated union
 type ListOrInt = 
     | I of int
-    | L of int list
+    | L of ListOrInt list
 //e.g:
-let x = [I(1); L([2;3;4]); I(5); I(6)]
+let x = L([I(1); L([I(2);I(3);L([I(88); I(27)])]); I(5); I(6)])
 
-// tail recursive version
-let Flatten lst =
-    let rec MatchElement acc lst = 
+// ok solution, uses recursion.
+// works by converting all integers in the lst into single element lists.
+// so that for example 3 -> [3] 
+let rec Flatten lst =
         match lst with
-        | I(e) :: xs -> e :: MatchElement acc xs
-        | L(e) :: xs -> (e @ acc) @ (MatchElement acc xs) 
-        | [] -> acc
-    MatchElement (List.Empty) lst
+        | I x -> [x]
+        | L x -> List.concat(List.map Flatten x)
 
+// using tail recursion ... I think. TODO: is this tail recursion!? 
+// It is slower than Flatten.
+let TailFlatten lst =
+    let rec RecFlatten acc lst =
+        match lst with
+        | I x -> x :: acc
+        | L x -> List.concat(List.map (RecFlatten acc) x)
+    RecFlatten List.Empty lst
 
-            
+// here we work out whether there is a performance difference between Flatten and TailFlatten.
+let time f arg =
+    let stopwatch = new System.Diagnostics.Stopwatch()
+    stopwatch.Start()
     
+    List.map (fun _ -> f arg) [1..1000000] |> ignore    
+    stopwatch.Stop()
+    stopwatch.Elapsed
 
+// function to allow us to compare two functions
+let Compare f1 f2 arg = 
+    let elapsed1 = time f1 arg
+    let elapsed2 = time f2 arg
 
+    // side effects
+    System.Console.WriteLine(elapsed1)
+    System.Console.WriteLine(elapsed2)
 
+    let diff = elapsed1.CompareTo(elapsed2)
+    match diff with
+    | x when x > 0 -> "f2 is faster than f1"
+    | x when x < 0 -> "f1 is faster than f2"
+    | x when x = 0 -> "same"
+    | _ -> failwith("gone wrong")
 
-    
+// Example output at the F# Interactive:
+// > Compare Flatten TailFlatten x;;
+// 5476
+// 6577
+// val it : string = "f1 is faster than f2"
+// Seems to indicate that Flatten is faster than the tail recursion version ... 
