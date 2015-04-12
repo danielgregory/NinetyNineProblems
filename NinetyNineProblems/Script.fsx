@@ -4,7 +4,6 @@
 // http://aperiodic.net/phil/scala/s-99/
 // (where solutions can be obtained in Scala ... though I didn't cheat!)
 
-// TODO: timer function
 // TODO unit tests
 
 // 1. find the last element of a list
@@ -126,12 +125,14 @@ let TailFlatten lst =
         | L x -> List.concat(List.map (RecFlatten acc) x)
     RecFlatten List.Empty lst
 
-// here we work out whether there is a performance difference between Flatten and TailFlatten.
+// interlude: here we work out whether there is a performance difference between Flatten and TailFlatten.
 let time f arg =
     let stopwatch = new System.Diagnostics.Stopwatch()
     stopwatch.Start()
     
+    // do work
     List.map (fun _ -> f arg) [1..1000000] |> ignore    
+    
     stopwatch.Stop()
     stopwatch.Elapsed
 
@@ -156,4 +157,38 @@ let Compare f1 f2 arg =
 // 5476
 // 6577
 // val it : string = "f1 is faster than f2"
-// Seems to indicate that Flatten is faster than the tail recursion version ... 
+// Seems to indicate that Flatten is faster than the tail recursion version ...
+
+// back to the problems
+// 8. Eliminate consecutive duplicates in list of elements.
+// e.g. [1;1;2;3;4;4;6] --> [1;2;3;4;6]
+let lst = [1;1;2;3;4;4;6]
+
+// this works but seems a little complicated.
+// the resulting list is returned in reverse order to we have to call List.rev on it
+// which seems inefficient. TODO: is there a better way?
+let RemoveDuplicates (lst:int list) = 
+    let rec Compress acc lst = 
+        match lst with
+        | [x] -> x::acc
+        | x :: xs -> 
+            let h = (List.head xs)
+            if h = x then
+                let acc = acc
+                Compress acc xs 
+            else
+                let acc = x :: acc  
+                Compress acc xs
+         | [] ->  failwith("empty list!")   
+    Compress [] lst 
+    |> List.rev
+
+
+
+    
+  
+         
+
+
+    
+     
