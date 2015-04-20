@@ -280,3 +280,13 @@ let Split n lst =
         | x :: xs when List.length acc < n -> InnerSplit (x::acc) xs
         | _ -> [acc; lst]   
     InnerSplit [] lst
+
+// 18.  Extract a slice from a list.
+// Not sure this suits F# well since we think of lists as a head plus a tail.
+// You do this sort of thing in Python a lot though.
+
+// ok solution but it involves iterating over the sequence three times.
+let Slice (a:int) (b:int) lst = 
+    let lst = List.mapi (fun i e -> (i,e)) lst
+    List.filter (fun (e,i) -> i>= a && i < b) lst
+    |> List.map snd
