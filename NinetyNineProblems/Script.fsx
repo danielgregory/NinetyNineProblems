@@ -105,6 +105,7 @@ let IsMirror lst =
 type ListOrInt = 
     | I of int
     | L of ListOrInt list
+
 //e.g:
 let x = L([I(1); L([I(2);I(3);L([I(88); I(27)])]); I(5); I(6)])
 
@@ -116,7 +117,7 @@ let rec Flatten lst =
         | I x -> [x]
         | L x -> List.concat(List.map Flatten x)
 
-// using tail recursion ... I think. TODO: is this tail recursion!? 
+// using tail recursion ... I think. TODO: is this tail recursion!? ans ... no
 // It is slower than Flatten.
 let TailFlatten lst =
     let rec RecFlatten acc lst =
@@ -124,6 +125,34 @@ let TailFlatten lst =
         | I x -> x :: acc
         | L x -> List.concat(List.map (RecFlatten acc) x)
     RecFlatten List.Empty lst
+
+// another possible solution:
+let rec FlattenSeq lst =
+    seq {for x in lst do 
+            yield x
+            yield! FlattenSeq x}
+
+// e.g. 
+let s = [[[1];[2];[3]]; [[4];[5]]; [[5]]]
+
+
+// using folds within folds ...
+let rec FoldFlatten acc lst = 
+    let ans = List.fold(fun acc e -> match e with
+                                     | I a -> (I a)::acc
+                                     | L a -> FoldFlatten acc a) acc lst
+    ans |> List.rev
+
+// flatten with seq expression
+let t:ListOrInt list =   [I 1;I 2;I 3; L [I 4;I 5;L [I 88; I 99; I 100]]]
+let rec SeqFlatten list =  
+    let FlatSeq = 
+        seq {for i in list do
+                            match i with
+                            | I n -> yield (I n)
+                            | L lst -> yield! SeqFlatten lst
+           }
+    FlatSeq |> List.ofSeq
 
 // interlude: here we work out whether there is a performance difference between Flatten and TailFlatten.
 let time f arg =
@@ -183,12 +212,24 @@ let RemoveDuplicates (lst:int list) =
     Compress [] lst 
     |> List.rev
 
+// 9. Pack consecutive duplicates of list elements into sublists.
+// 'partition' function : partition [1;1;2;3;4;4;6] -> [[1;1];[2];[3];[4;4];[6]]
+let IsEmpty lst =
+    (List.length lst) = 0
 
+let IsNotEmpty lst =
+    (List.length lst) <> 0
 
-    
-  
-         
+let rec Partition lst =    
+    let rec InnerPartition acc1 acc2 lst = 
+        match lst with
+        | x :: xs when IsEmpty acc1 -> InnerPartition [x] acc2 xs
+        | x :: xs when IsNotEmpty acc1 && List.head acc1 = x -> InnerPartition (x::acc1) acc2 xs
+        | x :: xs when IsNotEmpty acc1 && List.head acc1 <> x -> InnerPartition [x] (acc1::acc2) xs
+        | _ -> acc1::acc2
+    (InnerPartition [] [] lst) |> List.rev
 
-
-    
-     
+// 10. Run-length encoding of a list.
+// e.g. Encode ['a'; 'b'; 'b'; 'c'; 'c'; 'c';] -> [(1, 'a'); (2, 'b'); (3, 'c')]
+let GroupAndCount lst =
+    [ for e in (Partition lst) -> ((List.length e), (List.head e)) ] 
