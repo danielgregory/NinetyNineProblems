@@ -230,6 +230,53 @@ let rec Partition lst =
     (InnerPartition [] [] lst) |> List.rev
 
 // 10. Run-length encoding of a list.
-// e.g. Encode ['a'; 'b'; 'b'; 'c'; 'c'; 'c';] -> [(1, 'a'); (2, 'b'); (3, 'c')]
+// e.g. GroupAndCount ['a'; 'b'; 'b'; 'c'; 'c'; 'c';] -> [(1, 'a'); (2, 'b'); (3, 'c')]
 let GroupAndCount lst =
     [ for e in (Partition lst) -> ((List.length e), (List.head e)) ] 
+
+// 11. This problem is a little hard to do with the lists in F#.
+// e.g. GroupAndCount ['a'; 'b'; 'b'; 'c'; 'c'; 'c';] -> ['a'; (2, 'b'); (3, 'c')]
+
+// 12 Reverse of problem 10.
+// DeGroup [(1, 'a'); (2, 'b'); (3, 'c')]
+
+// first, take a tuple and return a single list
+let Expand tpl = 
+    let count, item = tpl
+    List.init count (fun _ -> item)
+
+let DeGroup lst =
+    List.fold (fun acc tpl -> acc@(Expand tpl)) [] lst
+
+// 13. no idea what this problem means
+
+// 14. Duplicate the elements of a list.
+// e.g. Duplicate ['a'; 'b'; 'c'; 'c'; 'd'] -> ['a'; 'a'; 'b'; 'b'; 'c'; 'c'; 'c'; 'c'; 'd'; 'd']
+let Duplicate lst =
+    let grouped = GroupAndCount lst
+    let doubledIt = [for count,elem in grouped -> (count * 2, elem)]
+    DeGroup doubledIt
+
+// 15. DuplicateByN(3, List('a, 'b, 'c, 'c, 'd))
+
+let DuplicateByN n lst = 
+    let grouped = GroupAndCount lst
+    // new list of tuples with the count scaled by a factor of n
+    let scaledByN = [for count,elem in grouped -> (count * n, elem)]
+    DeGroup scaledByN
+    
+// 16. Drop every Nth element from a list.
+let DropNth n list =
+    List.mapi(fun i e -> (i+1,e)) list
+    |> List.filter (fun (i,e) -> i%n<>0)
+    |> List.map snd
+
+// 17. Split a list into two parts.
+// e.g. Split 4 [1;2;3;4;5;6;7;8] ->  [[4; 3; 2; 1]; [5; 6; 7; 8]]
+// (I guess it could be problem that both lists are reversed, but I'm choosing not to mind.)
+let Split n lst =
+    let rec InnerSplit acc lst = 
+        match lst with
+        | x :: xs when List.length acc < n -> InnerSplit (x::acc) xs
+        | _ -> [acc; lst]   
+    InnerSplit [] lst
