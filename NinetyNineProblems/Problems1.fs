@@ -1,11 +1,8 @@
-﻿// NINETY-NINE PROBLEMS
+﻿(* Module contains solutions to problems 1 to 10 *)
+module Problems.Problems1
 
-// I've taken the problems from here:
-// http://aperiodic.net/phil/scala/s-99/
-// (where solutions can be obtained in Scala ... though I didn't cheat!)
-
-// TODO unit tests
-
+open System
+    
 // 1. find the last element of a list
 // e.g. last [1;2;3;4] -> 4
 let LastElement = Seq.last [1;2;3;4]
@@ -23,15 +20,15 @@ let rec GetLast2 lst =
     match lst with
     | [x] -> x
     | x :: xs -> GetLast2 xs
-    | _ -> failwith("Something has gone wrong!")
+    | _ -> failwith "Something has gone wrong!"
 
- // 2. Find the last but one element of a list.
- // e.g. GetLastButOne [1;2;3;4] -> 3
+// 2. Find the last but one element of a list.
+// e.g. GetLastButOne [1;2;3;4] -> 3
 let rec GetLastButOne lst = 
     match lst with 
     | [x; y] -> x
     | x :: xs -> GetLastButOne xs
-    | _ -> failwith("Oh no! It's gone wrong!")
+    | _ -> failwith "Oh no! It's gone wrong!"
 
 // 3. Find the Nth element of a list. 
 // (I'm taking the first element of the list to be the zeroth element)
@@ -139,8 +136,8 @@ let s = [[[1];[2];[3]]; [[4];[5]]; [[5]]]
 // using folds within folds ...
 let rec FoldFlatten acc lst = 
     let ans = List.fold(fun acc e -> match e with
-                                     | I a -> (I a)::acc
-                                     | L a -> FoldFlatten acc a) acc lst
+                                        | I a -> (I a)::acc
+                                        | L a -> FoldFlatten acc a) acc lst
     ans |> List.rev
 
 // flatten with seq expression
@@ -151,47 +148,8 @@ let rec SeqFlatten list =
                             match i with
                             | I n -> yield (I n)
                             | L lst -> yield! SeqFlatten lst
-           }
+            }
     FlatSeq |> List.ofSeq
-
-// interlude: here we work out whether there is a performance difference between Flatten and TailFlatten.
-let time f arg =
-    let stopwatch = new System.Diagnostics.Stopwatch()
-    stopwatch.Start()
-    
-    // do work
-    List.map (fun _ -> f arg) [1..1000000] |> ignore    
-    
-    stopwatch.Stop()
-    stopwatch.Elapsed
-
-// function to allow us to compare two functions
-let Compare f1 f2 arg = 
-    let elapsed1 = time f1 arg
-    let elapsed2 = time f2 arg
-
-    // side effects
-    System.Console.WriteLine(elapsed1)
-    System.Console.WriteLine(elapsed2)
-
-    let diff = elapsed1.CompareTo(elapsed2)
-    match diff with
-    | x when x > 0 -> "f2 is faster than f1"
-    | x when x < 0 -> "f1 is faster than f2"
-    | x when x = 0 -> "same"
-    | _ -> failwith("gone wrong")
-
-// Example output at the F# Interactive:
-// > Compare Flatten TailFlatten x;;
-// 5476
-// 6577
-// val it : string = "f1 is faster than f2"
-// Seems to indicate that Flatten is faster than the tail recursion version ...
-
-// back to the problems
-// 8. Eliminate consecutive duplicates in list of elements.
-// e.g. [1;1;2;3;4;4;6] --> [1;2;3;4;6]
-let lst = [1;1;2;3;4;4;6]
 
 // this works but seems a little complicated.
 // the resulting list is returned in reverse order to we have to call List.rev on it
@@ -208,7 +166,7 @@ let RemoveDuplicates (lst:int list) =
             else
                 let acc = x :: acc  
                 Compress acc xs
-         | [] ->  failwith("empty list!")   
+            | [] ->  failwith("empty list!")   
     Compress [] lst 
     |> List.rev
 
@@ -232,61 +190,4 @@ let rec Partition lst =
 // 10. Run-length encoding of a list.
 // e.g. GroupAndCount ['a'; 'b'; 'b'; 'c'; 'c'; 'c';] -> [(1, 'a'); (2, 'b'); (3, 'c')]
 let GroupAndCount lst =
-    [ for e in (Partition lst) -> ((List.length e), (List.head e)) ] 
-
-// 11. This problem is a little hard to do with the lists in F#.
-// e.g. GroupAndCount ['a'; 'b'; 'b'; 'c'; 'c'; 'c';] -> ['a'; (2, 'b'); (3, 'c')]
-
-// 12 Reverse of problem 10.
-// DeGroup [(1, 'a'); (2, 'b'); (3, 'c')]
-
-// first, take a tuple and return a single list
-let Expand tpl = 
-    let count, item = tpl
-    List.init count (fun _ -> item)
-
-let DeGroup lst =
-    List.fold (fun acc tpl -> acc@(Expand tpl)) [] lst
-
-// 13. no idea what this problem means
-
-// 14. Duplicate the elements of a list.
-// e.g. Duplicate ['a'; 'b'; 'c'; 'c'; 'd'] -> ['a'; 'a'; 'b'; 'b'; 'c'; 'c'; 'c'; 'c'; 'd'; 'd']
-let Duplicate lst =
-    let grouped = GroupAndCount lst
-    let doubledIt = [for count,elem in grouped -> (count * 2, elem)]
-    DeGroup doubledIt
-
-// 15. DuplicateByN(3, List('a, 'b, 'c, 'c, 'd))
-
-let DuplicateByN n lst = 
-    let grouped = GroupAndCount lst
-    // new list of tuples with the count scaled by a factor of n
-    let scaledByN = [for count,elem in grouped -> (count * n, elem)]
-    DeGroup scaledByN
-    
-// 16. Drop every Nth element from a list.
-let DropNth n list =
-    List.mapi(fun i e -> (i+1,e)) list
-    |> List.filter (fun (i,e) -> i%n<>0)
-    |> List.map snd
-
-// 17. Split a list into two parts.
-// e.g. Split 4 [1;2;3;4;5;6;7;8] ->  [[4; 3; 2; 1]; [5; 6; 7; 8]]
-// (I guess it could be problem that both lists are reversed, but I'm choosing not to mind.)
-let Split n lst =
-    let rec InnerSplit acc lst = 
-        match lst with
-        | x :: xs when List.length acc < n -> InnerSplit (x::acc) xs
-        | _ -> [acc; lst]   
-    InnerSplit [] lst
-
-// 18.  Extract a slice from a list.
-// Not sure this suits F# well since we think of lists as a head plus a tail.
-// You do this sort of thing in Python a lot though.
-
-// ok solution but it involves iterating over the sequence three times.
-let Slice (a:int) (b:int) lst = 
-    let lst = List.mapi (fun i e -> (i,e)) lst
-    List.filter (fun (e,i) -> i>= a && i < b) lst
-    |> List.map snd
+    [ for e in (Partition lst) -> ((List.length e), (List.head e)) ]

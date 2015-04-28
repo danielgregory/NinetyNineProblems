@@ -1,0 +1,9 @@
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\bin\Debug\NinetyNineProblems.XML
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\bin\Debug\NinetyNineProblems.dll
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\bin\Debug\NinetyNineProblems.pdb
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\bin\Debug\FSharp.Core.dll
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\bin\Debug\nunit.framework.dll
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\bin\Debug\FSharp.Core.xml
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\bin\Debug\nunit.framework.xml
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\obj\Debug\NinetyNineProblems.dll
+c:\users\daniel gregory\documents\NinetyNineProblems\NinetyNineProblems\obj\Debug\NinetyNineProblems.pdb

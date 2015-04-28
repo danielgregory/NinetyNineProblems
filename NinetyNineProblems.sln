@@ -3,7 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NinetyNineProblems", "NinetyNineProblems\NinetyNineProblems.fsproj", "{35A14B4C-9BDE-4E4C-82BE-8EE71AA0A16C}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NinetyNineProblems", "NinetyNineProblems\NinetyNineProblems.fsproj", "{2D23D389-BB9A-4D99-B986-9F28904F39D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Problems", "Problems", "{31E4FEC5-3DA6-4E70-9F53-100D468C30D7}"
+	ProjectSection(SolutionItems) = preProject
+		NinetyNineProblems\Problems1.fs = NinetyNineProblems\Problems1.fs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48FADAFC-5112-41FA-BF3C-45B40FC60961}"
+	ProjectSection(SolutionItems) = preProject
+		NinetyNineProblems\Tests1.fs = NinetyNineProblems\Tests1.fs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{3E6B6CCC-3C79-415B-BDEA-02CF4386106E}"
+	ProjectSection(SolutionItems) = preProject
+		NinetyNineProblems\Timer.fs = NinetyNineProblems\Timer.fs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +26,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{35A14B4C-9BDE-4E4C-82BE-8EE71AA0A16C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35A14B4C-9BDE-4E4C-82BE-8EE71AA0A16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35A14B4C-9BDE-4E4C-82BE-8EE71AA0A16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35A14B4C-9BDE-4E4C-82BE-8EE71AA0A16C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D23D389-BB9A-4D99-B986-9F28904F39D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D23D389-BB9A-4D99-B986-9F28904F39D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D23D389-BB9A-4D99-B986-9F28904F39D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D23D389-BB9A-4D99-B986-9F28904F39D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
