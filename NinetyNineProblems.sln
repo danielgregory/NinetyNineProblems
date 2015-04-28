@@ -5,19 +5,15 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NinetyNineProblems", "NinetyNineProblems\NinetyNineProblems.fsproj", "{2D23D389-BB9A-4D99-B986-9F28904F39D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Problems", "Problems", "{31E4FEC5-3DA6-4E70-9F53-100D468C30D7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solutions", "Solutions", "{B9A0FFCC-A968-4A67-BD89-1C11213282A4}"
 	ProjectSection(SolutionItems) = preProject
-		NinetyNineProblems\Problems1.fs = NinetyNineProblems\Problems1.fs
+		NinetyNineProblems\ArithmeticProblems.fs = NinetyNineProblems\ArithmeticProblems.fs
+		NinetyNineProblems\ListProcessingProblems.fs = NinetyNineProblems\ListProcessingProblems.fs
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48FADAFC-5112-41FA-BF3C-45B40FC60961}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F5607449-4DBF-4150-B951-CA3D6814A738}"
 	ProjectSection(SolutionItems) = preProject
-		NinetyNineProblems\Tests1.fs = NinetyNineProblems\Tests1.fs
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{3E6B6CCC-3C79-415B-BDEA-02CF4386106E}"
-	ProjectSection(SolutionItems) = preProject
-		NinetyNineProblems\Timer.fs = NinetyNineProblems\Timer.fs
+		NinetyNineProblems\ListProcessingTests.fs = NinetyNineProblems\ListProcessingTests.fs
 	EndProjectSection
 EndProject
 Global

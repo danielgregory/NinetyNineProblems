@@ -63,9 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="Problems1.fs" />
-    <Compile Include="Tests1.fs" />
+    <Compile Include="ListProcessingProblems.fs" />
+    <Compile Include="ListProcessingTests.fs" />
     <Compile Include="Timer.fs" />
+    <Compile Include="ArithmeticProblems.fs" />
+    <Compile Include="ArithmeticTests.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

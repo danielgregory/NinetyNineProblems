@@ -1,16 +1,16 @@
 ﻿(* Module contains the tests for the solutions to problems 1 to 10. *)
 module Tests1
 
-open Problems.Problems1
+open ListProcessingProblems
 open NUnit.Framework
 
 [<TestFixture>]
-type TestProblems1() =
-    let x = L([I(1); L([I(2);I(3);L([I(88); I(27)])]); I(5); I(6)])    
+type TestListProblems() =
+    
     [<Test>]
     member this.TestGetLast() =
         let lst = [1; 2; 3; 4; 5; 6; 7; 8; 9; 0; 3; 4; 61; 1; 67]
-        let actual = GetLast lst 
+        let actual = GetLast lst
         Assert.AreEqual(67, actual)
 
     [<Test>]
