@@ -1,13 +1,11 @@
 ﻿(* Module contains solutions to problems 31 ... all to do with arithmetic *)
 module Arithmetic
 
-open System
 // 31. Determine whether a given integer number is prime.
 let isPrime n =
     let integers = seq {for i in 2..n/2 -> i}
     let divisors = Seq.skipWhile(fun i -> n % i <> 0) integers
-    if n = 0 then false else if n = 2 then true 
-    else Seq.isEmpty divisors
+    if n = 0 then false else Seq.isEmpty divisors
 
 // 32 Find the greatest common divisor of two numbers using Euclid's algorithm.
 let rec gcd a b = 
@@ -30,3 +28,9 @@ let isCoPrime a b =
 let phi m =
     let s = seq {for i in 1.. (m - 1) do if isCoPrime i m then yield i}
     Seq.length s
+
+// 35. Determine the prime factors of a given positive integer.
+// e.g. primeFactors 315 -> [3; 3; 5; 7]
+let primeFactors n =
+    let max = n / 2
+    seq {for i in 2.. max do if n%i = 0 && isPrime i then yield i} |> Seq.toList 

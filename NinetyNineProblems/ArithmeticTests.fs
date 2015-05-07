@@ -13,6 +13,13 @@ type TestArithmeticProblems() =
         let notPrime = 25
         Assert.IsTrue (isPrime prime)
         Assert.IsFalse (isPrime notPrime)
+        // some other examples
+        Assert.IsTrue (isPrime 2)
+        Assert.IsTrue (isPrime 5)
+        Assert.IsTrue (isPrime 7)
+        Assert.IsTrue (isPrime 769)
+
+        Assert.IsFalse (isPrime 24)
    
     [<Test>]
     member this.TestGcd() =
