@@ -31,6 +31,21 @@ let phi m =
 
 // 35. Determine the prime factors of a given positive integer.
 // e.g. primeFactors 315 -> [3; 3; 5; 7]
-let primeFactors n =
-    let max = n / 2
-    seq {for i in 2.. max do if n%i = 0 && isPrime i then yield i} |> Seq.toList 
+// using active patterns
+let (|Prime|NotPrime|) n = if isPrime n then Prime n else NotPrime n
+
+let findFirstPrime n = 
+    let result = Seq.tryFind(fun i -> n % i = 0 && isPrime i) [2 .. n]
+    match result with
+    | Some result -> (result, n / result)
+    | None -> failwith "not a value"
+     
+let primeFactors input =
+    let rec innerPrimeFactors (n, m) acc =
+        match n,m with
+        | (Prime n, Prime m) -> n::m::acc
+        | (NotPrime n, Prime m) -> innerPrimeFactors (findFirstPrime n) (m::acc) 
+        | (Prime n, NotPrime m) -> innerPrimeFactors (findFirstPrime m) (n::acc)  
+        | (NotPrime n, _) -> innerPrimeFactors (findFirstPrime n) acc
+    let result = innerPrimeFactors (findFirstPrime input) []
+    result |> Seq.sortBy(fun i -> i) 
