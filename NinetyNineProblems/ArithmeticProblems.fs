@@ -1,6 +1,8 @@
 ﻿(* Module contains solutions to problems 31 ... all to do with arithmetic *)
 module Arithmetic
 
+open Utils.Helpers 
+
 // 31. Determine whether a given integer number is prime.
 let isPrime n =
     let integers = seq {for i in 2..n/2 -> i}
@@ -34,18 +36,59 @@ let phi m =
 // using active patterns
 let (|Prime|NotPrime|) n = if isPrime n then Prime n else NotPrime n
 
-let findFirstPrime n = 
-    let result = Seq.tryFind(fun i -> n % i = 0 && isPrime i) [2 .. n]
-    match result with
-    | Some result -> (result, n / result)
-    | None -> failwith "not a value"
-     
-let primeFactors input =
-    let rec innerPrimeFactors (n, m) acc =
-        match n,m with
-        | (Prime n, Prime m) -> n::m::acc
-        | (NotPrime n, Prime m) -> innerPrimeFactors (findFirstPrime n) (m::acc) 
-        | (Prime n, NotPrime m) -> innerPrimeFactors (findFirstPrime m) (n::acc)  
-        | (NotPrime n, _) -> innerPrimeFactors (findFirstPrime n) acc
-    let result = innerPrimeFactors (findFirstPrime input) []
-    result |> Seq.sortBy(fun i -> i) 
+let isPrimeDivisor acc e =
+    let input = 315
+    if input % e = 0 && isPrime e then
+        List.Cons(e, acc)
+    else 
+        acc
+
+ // not quite a solution but I'm leaving this here as an example
+ // of fold
+let NotQuiteTheFullListOfprimeDivisors input =
+    let testNumbers = [for x in 2 .. input / 2 -> x]
+    List.fold (fun acc e -> isPrimeDivisor acc e) [] testNumbers
+
+// this works when combined with outerPrimes
+let rec primeDivisors acc numbers n =
+    match numbers with
+    | x :: xs when n % x = 0
+        -> match x with
+            | Prime x -> primeDivisors (x::acc) xs n
+            | NotPrime x -> primeDivisors acc [for i in 2.. x / 2 -> i] x 
+    | x :: xs when n % x <> 0 -> primeDivisors acc xs n
+    | _ -> acc
+
+let outerPrimes n =
+    let numbers = [for x in 2 .. n / 2 -> x]
+    let divisors = (primeDivisors [] numbers n)
+    if Seq.length divisors = 1
+    then Seq.append divisors divisors
+    else divisors |> Seq.sortBy asc
+
+// another solution, this time using fold
+let rec lazyUniqueDivisors n =
+    seq {for i in 2 .. n / 2 do 
+            if n % i = 0 && isPrime i 
+                then yield i
+            else if n % i = 0 && not (isPrime i) 
+                then yield! lazyUniqueDivisors i}
+
+// returns product of all the elements in the lseq.
+let listProduct s =
+    Seq.fold (fun acc e -> acc * e)  1 s
+
+let findMeThePrimeDivisors n =
+    let divisors = (lazyUniqueDivisors n)
+    let primes = Seq.fold (fun acc e -> 
+                            if (listProduct acc) = n then
+                                acc
+                            else
+                                 e::acc) [] divisors 
+    // fix for square numbers - e.g. 9 = 3 x 3 
+    if Seq.length primes = 1 
+    then 
+        Seq.append primes primes 
+    else
+        (primes |> Seq.sortBy asc)
+           
