@@ -147,7 +147,11 @@ type TestListProblems() =
         let input = [1;1;1;2;2;3;3;3;3;4;6;8;8]
         let expected = [[1; 1; 1]; [2; 2]; [3; 3; 3; 3]; [4]; [6]; [8; 8]]
         let result = Partition input
-        Assert.AreEqual(expected, result)   
+        Assert.AreEqual(expected, result)
+
+// 19 use the following lists:
+// let lst = ['a'; 'b'; 'c'; 'd'; 'e'; 'f'; 'g'; 'h'; 'i'; 'j' ;'k']
+// let rotatedlst = 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k, 'a, 'b, 'c)
     
 
 

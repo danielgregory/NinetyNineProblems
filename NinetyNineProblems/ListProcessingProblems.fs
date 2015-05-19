@@ -257,3 +257,46 @@ let ArraySlice (a:int) (b:int) arr =
         else
             result
     slice a List.empty
+
+// 19 Rotate a list to the left
+let rec innerReverse n lst = 
+        match lst with
+        | x :: xs when n > 0 -> innerReverse (n - 1) (xs@[x])
+        | _  -> lst
+
+// question wants this function
+let rotateLeft n lst =    
+    innerReverse n lst
+
+// interestingly we get the rotate right like this:
+let rotateRight n lst = 
+    lst 
+    |> List.rev 
+    |> innerReverse n 
+    |> List.rev 
+    
+// 20 Remove the Kth element from a list.
+// F# lists are really meant for this kind of thing
+// it's only easy to remove the head of the list.
+// so in this example we keep rotating the list and chopping
+// off the head of the list
+let remove k lst =
+    let lst2 = lst |> rotateLeft k |> List.tail
+    let len = List.length lst
+    rotateLeft (len - k - 1) lst2
+
+//21 Insert an element at a given position
+let insertAt k n lst =  
+    rotateRight k (n::(rotateLeft k lst))
+
+// 22 range(4, 9)
+// List(4, 5, 6, 7, 8, 9) 
+let range a b =
+    [for i in a .. b -> i]
+
+// using recursion
+let rec recRange acc seed finish =
+    if seed <= finish then
+        recRange (seed::acc) (seed + 1) finish
+    else 
+        acc |> List.rev
