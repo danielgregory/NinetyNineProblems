@@ -300,3 +300,9 @@ let rec recRange acc seed finish =
         recRange (seed::acc) (seed + 1) finish
     else 
         acc |> List.rev
+
+// example using infinite seqs
+let range2 start finish =
+    let s = Seq.initInfinite(fun i -> i + start) 
+    s |> Seq.take (finish - 1)  
+      |> Seq.toList
