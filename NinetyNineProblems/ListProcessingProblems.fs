@@ -77,7 +77,7 @@ let TailReverse lst  =
 
 // using fold
 let foldReverse lst =
-    List.fold (fun acc e -> e::acc) [] lst 
+    List.fold (fun acc e -> e::acc) [] lst
 
 // 6. Find out whether a list is a palindrome.
 // e.g. IsPalidrome [1;2;3;3;2;1] -> true
@@ -310,3 +310,13 @@ let range2 start finish =
     let s = Seq.initInfinite(fun i -> i + start) 
     s |> Seq.take (finish - 1)  
       |> Seq.toList
+
+// 23 Extract a given number of randomly selected elements from a list.
+let extractRnd n lst = 
+    let r = new Random()
+    seq {for i in 1..n -> let num = r.Next((List.length lst) - 1)
+                          List.nth lst num } |> Seq.toList
+
+// 24 Lotto: Draw N different random numbers from the set 1..M.
+let lotto n m =
+    extractRnd n [1..m]
