@@ -73,7 +73,11 @@ let TailReverse lst  =
         match lst with
         | x :: xs -> Reverse (x::acc) xs  
         | x -> acc
-    Reverse List.Empty lst 
+    Reverse List.Empty lst
+
+// using fold
+let foldReverse lst =
+    List.fold (fun acc e -> e::acc) [] lst 
 
 // 6. Find out whether a list is a palindrome.
 // e.g. IsPalidrome [1;2;3;3;2;1] -> true

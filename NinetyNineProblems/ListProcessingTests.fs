@@ -86,7 +86,19 @@ type TestListProblems() =
         let expected = [67; 1; 61; 4; 3; 0; 9; 8; 7; 6; 5; 4; 3; 2; 1]
         let actual = TailReverse lst
 
-        Assert.AreEqual(expected, actual) 
+        Assert.AreEqual(expected, actual)
+            
+    [<Test>]
+    member this.TestFoldReverse() =
+        // input list
+        let lst = [1; 2; 3; 4; 5; 6; 7; 8; 9; 0; 3; 4; 61; 1; 67]
+        
+        let expected = [67; 1; 61; 4; 3; 0; 9; 8; 7; 6; 5; 4; 3; 2; 1]
+        let actual = foldReverse lst
+
+        Assert.AreEqual(expected, actual)
+        
+         
      
      [<Test>]
      member this.TestIsPalindromeWhereFalse() =
