@@ -2,6 +2,7 @@
 module ListProcessingProblems
 
 open System
+open Utils.Helpers
     
 // 1. find the last element of a list
 // e.g. last [1;2;3;4] -> 4
@@ -280,7 +281,7 @@ let rotateRight n lst =
     |> List.rev 
     
 // 20 Remove the Kth element from a list.
-// F# lists are really meant for this kind of thing
+// F# lists aren't really meant for this kind of thing
 // it's only easy to remove the head of the list.
 // so in this example we keep rotating the list and chopping
 // off the head of the list
@@ -320,3 +321,37 @@ let extractRnd n lst =
 // 24 Lotto: Draw N different random numbers from the set 1..M.
 let lotto n m =
     extractRnd n [1..m]
+
+// 25 Generate a random permutation of the elements of a list.
+// e.g. permute [a,b,c,d,e,f] --> [b,a,d,c,e,f]
+// strategy is to generate all permutations of a given list and then
+// randomly pick one.
+let alphabetlst = ["a"; "b"; "c"; "d"; "e"; "f"]
+
+let rec getRndPerm (lst: string list) =
+    let arr = List.toArray lst
+    let size = Array.length arr
+
+    let r = new System.Random()
+    let randoms = 
+        Seq.initInfinite(fun _ -> r.Next(0, size))
+        |> Seq.distinct
+        |> Seq.take size
+        |> Seq.toList
+
+    List.map(fun e -> arr.[e]) randoms
+
+// seems to me that the above problem is really better suited
+// to arrays rather than lists as we have indexed access on 
+// arrays...
+// TODO: allow for generic list input of any type.
+
+// 26 Generate the combinations of K distinct objects chosen from the N elements of a list
+// read 'choose n from k':
+//let choose n k =
+//    // get the total number of combinations
+//    let count = (factorial n) / (factorial k)
+//    let rec combinations n k acc =
+//        while (List.length acc) < count do
+//     
+//     combinations n k []

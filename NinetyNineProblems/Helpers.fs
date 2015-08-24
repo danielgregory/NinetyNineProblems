@@ -13,3 +13,8 @@ let desc =
 let lst = [1;2;3;4;5;6]
 let ans = Seq.sortBy desc lst
 let ans2 = Seq.sortBy asc lst
+
+// returns n factorial. e.g. 3! = 6 
+let factorial n =
+    let numbers = seq {1 .. n}
+    Seq.fold(fun acc e -> acc * e) 1 numbers
