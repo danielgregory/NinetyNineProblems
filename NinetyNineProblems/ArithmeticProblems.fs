@@ -36,7 +36,7 @@ let phi m =
 // using active patterns
 let (|Prime|NotPrime|) n = if isPrime n then Prime n else NotPrime n
 
-let isPrimeDivisor acc e =
+let getPrimeDivisors acc e =
     let input = 315
     if input % e = 0 && isPrime e then
         List.Cons(e, acc)
@@ -47,7 +47,7 @@ let isPrimeDivisor acc e =
  // of fold
 let NotQuiteTheFullListOfprimeDivisors input =
     let testNumbers = [for x in 2 .. input / 2 -> x]
-    List.fold (fun acc e -> isPrimeDivisor acc e) [] testNumbers
+    List.fold (fun acc e -> getPrimeDivisors acc e) [] testNumbers
 
 // this works when combined with outerPrimes
 let rec primeDivisors acc numbers n =
@@ -91,4 +91,31 @@ let findMeThePrimeDivisors n =
         Seq.append primes primes 
     else
         (primes |> Seq.sortBy asc)
-           
+
+// 36 Determine the prime factors of a given positive integer (2).
+// Construct a list containing the prime factors and their multiplicity.
+// Example:
+// prime_factors_mult 315 -> [[3,2],[5,1],[7,1]]
+let isPrimeDivisor n candidatePrime =
+    n % candidatePrime = 0 && isPrime candidatePrime                         
+    
+let findFirstPrimeDivisor n =
+    seq {for i in 3.. n / 2 -> i}
+    |> Seq.tryFind (fun i -> isPrimeDivisor n i)
+
+// solution: get the first prime, p of the input n ... and then
+// get the first prime from (n / p), keep going till we've
+// found them all.    
+let getPrimeDivisors2 (n:int) =
+    let rec innerPrimeDivisors acc n =
+        let product = List.fold(fun p e -> p * e) 1 acc
+        let firstPrime = findFirstPrimeDivisor n
+        match firstPrime with
+        | Some p when product <> n -> innerPrimeDivisors (p::acc) (n / p)
+        | Some p when product = n -> acc
+        | None | _ -> n::acc
+    innerPrimeDivisors [] n
+
+// returns a list of tuples, more or less as required for problem 36.       
+let groupPrimeDivisors primes =
+    primes |> Seq.countBy id
